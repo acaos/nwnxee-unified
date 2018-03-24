@@ -345,6 +345,9 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
     {
         LOG_NOTICE("Loading NWNX.");
 
+        LOG_DEBUG("Calculated base relocation address: %x", Platform::ASLR::GetRelocatedAddress(0));
+        LOG_DEBUG("Calculated global relocation address: %x", Platform::ASLR::GetRelocatedGlobalAddress(0));
+
         try
         {
             g_core->InitialSetupHooks();
