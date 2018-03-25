@@ -19,7 +19,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 
-static ViewPtr<Structs::Structs> g_plugin;
+static ViewPtr<NWNX_STRUCTS_PLUGIN_NAME::NWNX_STRUCTS_PLUGIN_NAME> g_plugin;
 static CGameEffect *g_lastPushedStruct;
 
 
