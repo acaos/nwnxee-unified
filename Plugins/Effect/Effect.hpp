@@ -11,6 +11,9 @@
  * except for the following defines. If you make changes to this plugin,
  * copy the `.hpp` and `.cpp` files to the other plugin and adjust the
  * below defines appropriately.
+ *
+ * `NWNX_STRUCTS_EXPECTED_TYPE` should be `0` for `Effect` and
+ * `4` for `ItemProperty`.
  */
 #define NWNX_STRUCTS_PLUGIN_NAME        Effect
 #define NWNX_STRUCTS_EXPECTED_TYPE      0
@@ -33,9 +36,10 @@ private:
                                                int32_t structure_type,
                                                void *engine_structure);
 
+    ArgumentStack GetCasterLevel                (ArgumentStack&& args);
     ArgumentStack GetDuration                   (ArgumentStack&& args);
     ArgumentStack GetDurationRemaining          (ArgumentStack&& args);
-    ArgumentStack GetHasEffect                  (ArgumentStack&& args);
+    ArgumentStack GetHasMatchingEffect          (ArgumentStack&& args);
     ArgumentStack GetInteger                    (ArgumentStack&& args);
     ArgumentStack GetNumIntegers                (ArgumentStack&& args);
     ArgumentStack GetSpellId                    (ArgumentStack&& args);
@@ -46,6 +50,13 @@ private:
     ArgumentStack SetSpellId                    (ArgumentStack&& args);
     ArgumentStack SetTrueType                   (ArgumentStack&& args);
 
+    /* TODO */
+//  ArgumentStack GetFloat                      (ArgumentStack&& args);
+//  ArgumentStack GetObject                     (ArgumentStack&& args);
+//  ArgumentStack GetString                     (ArgumentStack&& args);
+//  ArgumentStack SetFloat                      (ArgumentStack&& args);
+//  ArgumentStack SetObject                     (ArgumentStack&& args);
+//  ArgumentStack SetString                     (ArgumentStack&& args);
 };
 
 }

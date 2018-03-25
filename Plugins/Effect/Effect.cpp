@@ -51,9 +51,10 @@ NWNX_STRUCTS_PLUGIN_NAME::NWNX_STRUCTS_PLUGIN_NAME(const Plugin::CreateParams& p
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, std::bind(&NWNX_STRUCTS_PLUGIN_NAME::func, this, std::placeholders::_1))
 
+    REGISTER(GetCasterLevel);
     REGISTER(GetDuration);
     REGISTER(GetDurationRemaining);
-    REGISTER(GetHasEffect);
+    REGISTER(GetHasMatchingEffect);
     REGISTER(GetInteger);
     REGISTER(GetNumIntegers);
     REGISTER(GetSpellId);
@@ -76,6 +77,25 @@ NWNX_STRUCTS_PLUGIN_NAME::NWNX_STRUCTS_PLUGIN_NAME(const Plugin::CreateParams& p
 
 NWNX_STRUCTS_PLUGIN_NAME::~NWNX_STRUCTS_PLUGIN_NAME()
 {
+}
+
+ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::GetCasterLevel(ArgumentStack&&)
+{
+    int32_t ret = 0;
+    ArgumentStack stack;
+
+    if (g_lastPushedStruct != NULL)
+    {
+        ret = g_lastPushedStruct->m_nCasterLevel;
+    }
+    else
+    {
+        LOG_ERROR("Unable to get last pushed struct");
+    }
+
+    Services::Events::InsertArgument(stack, ret);
+
+    return stack;
 }
 
 ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::GetDuration(ArgumentStack&&)
@@ -327,7 +347,7 @@ void NWNX_STRUCTS_PLUGIN_NAME::HandleStackPushEngineStructure(Services::Hooks::C
     // Before or after doesn't matter, just pick one so it happens only once
     // Structure types 0 and 4 are effect and item property, respectively
     if (type == Services::Hooks::CallType::BEFORE_ORIGINAL &&
-        (structure_type == 0 || structure_type == 4))
+        structure_type == NWNX_STRUCTS_EXPECTED_TYPE)
     {
         g_lastPushedStruct = static_cast<CGameEffect*>(engine_structure);
     }
