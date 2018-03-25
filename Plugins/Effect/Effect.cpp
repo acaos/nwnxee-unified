@@ -1,4 +1,4 @@
-#include "Structs.hpp"
+#include "Effect.hpp"
 
 #include "API/CAppManager.hpp"
 #include "API/CGameEffect.hpp"
@@ -27,7 +27,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
     return new Plugin::Info
     {
-        "Structs",
+        NWNX_STRUCTS_STRINGIFY(NWNX_STRUCTS_PLUGIN_NAME),
         "Functions exposing additional properties of engine structures",
         "Acaos",
         "dswarin@gmail.com",
@@ -38,18 +38,18 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 
 NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 {
-    g_plugin = new Structs::Structs(params);
+    g_plugin = new NWNX_STRUCTS_PLUGIN_NAME::NWNX_STRUCTS_PLUGIN_NAME(params);
     return g_plugin;
 }
 
 
-namespace Structs {
+namespace NWNX_STRUCTS_PLUGIN_NAME {
 
-Structs::Structs(const Plugin::CreateParams& params)
+NWNX_STRUCTS_PLUGIN_NAME::NWNX_STRUCTS_PLUGIN_NAME(const Plugin::CreateParams& params)
     : Plugin(params)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Structs::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, std::bind(&NWNX_STRUCTS_PLUGIN_NAME::func, this, std::placeholders::_1))
 
     REGISTER(GetDuration);
     REGISTER(GetDurationRemaining);
@@ -74,11 +74,11 @@ Structs::Structs(const Plugin::CreateParams& params)
 
 }
 
-Structs::~Structs()
+NWNX_STRUCTS_PLUGIN_NAME::~NWNX_STRUCTS_PLUGIN_NAME()
 {
 }
 
-ArgumentStack Structs::GetDuration(ArgumentStack&&)
+ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::GetDuration(ArgumentStack&&)
 {
     float ret = -1.0;
     ArgumentStack stack;
@@ -97,7 +97,7 @@ ArgumentStack Structs::GetDuration(ArgumentStack&&)
     return stack;
 }
 
-ArgumentStack Structs::GetDurationRemaining(ArgumentStack&&)
+ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::GetDurationRemaining(ArgumentStack&&)
 {
     float ret = -1.0;
     ArgumentStack stack;
@@ -129,7 +129,7 @@ ArgumentStack Structs::GetDurationRemaining(ArgumentStack&&)
     return stack;
 }
 
-ArgumentStack Structs::GetHasEffect(ArgumentStack&&)
+ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::GetHasEffect(ArgumentStack&&)
 {
     int32_t ret = 0;
     ArgumentStack stack;
@@ -150,7 +150,7 @@ ArgumentStack Structs::GetHasEffect(ArgumentStack&&)
     return stack;
 }
 
-ArgumentStack Structs::GetInteger(ArgumentStack&& args)
+ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::GetInteger(ArgumentStack&& args)
 {
     int32_t ret = 0;
     ArgumentStack stack;
@@ -174,7 +174,7 @@ ArgumentStack Structs::GetInteger(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Structs::GetNumIntegers(ArgumentStack&&)
+ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::GetNumIntegers(ArgumentStack&&)
 {
     int32_t ret = 0;
     ArgumentStack stack;
@@ -193,7 +193,7 @@ ArgumentStack Structs::GetNumIntegers(ArgumentStack&&)
     return stack;
 }
 
-ArgumentStack Structs::GetSpellId(ArgumentStack&&)
+ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::GetSpellId(ArgumentStack&&)
 {
     int32_t ret = 0;
     ArgumentStack stack;
@@ -212,7 +212,7 @@ ArgumentStack Structs::GetSpellId(ArgumentStack&&)
     return stack;
 }
 
-ArgumentStack Structs::GetTrueType(ArgumentStack&&)
+ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::GetTrueType(ArgumentStack&&)
 {
     int32_t ret = 0;
     ArgumentStack stack;
@@ -231,7 +231,7 @@ ArgumentStack Structs::GetTrueType(ArgumentStack&&)
     return stack;
 }
 
-ArgumentStack Structs::SetCasterLevel(ArgumentStack&& args)
+ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::SetCasterLevel(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
@@ -249,7 +249,7 @@ ArgumentStack Structs::SetCasterLevel(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Structs::SetCreator(ArgumentStack&& args)
+ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::SetCreator(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
@@ -266,7 +266,7 @@ ArgumentStack Structs::SetCreator(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Structs::SetInteger(ArgumentStack&&)
+ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::SetInteger(ArgumentStack&&)
 {
     ArgumentStack stack;
 
@@ -287,7 +287,7 @@ ArgumentStack Structs::SetInteger(ArgumentStack&&)
     return stack;
 }
 
-ArgumentStack Structs::SetSpellId(ArgumentStack&& args)
+ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::SetSpellId(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
@@ -304,7 +304,7 @@ ArgumentStack Structs::SetSpellId(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Structs::SetTrueType(ArgumentStack&& args)
+ArgumentStack NWNX_STRUCTS_PLUGIN_NAME::SetTrueType(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
@@ -322,7 +322,7 @@ ArgumentStack Structs::SetTrueType(ArgumentStack&& args)
 }
 
 
-void Structs::HandleStackPushEngineStructure(Services::Hooks::CallType type, CVirtualMachine *, int32_t structure_type, void *engine_structure)
+void NWNX_STRUCTS_PLUGIN_NAME::HandleStackPushEngineStructure(Services::Hooks::CallType type, CVirtualMachine *, int32_t structure_type, void *engine_structure)
 {
     // Before or after doesn't matter, just pick one so it happens only once
     // Structure types 0 and 4 are effect and item property, respectively
